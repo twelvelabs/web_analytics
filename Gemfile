@@ -31,6 +31,6 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-spec-rails'
   gem 'mocha'
-  gem 'rubocop',                require: false
+  gem 'rubocop', require: false
   gem 'selenium-webdriver'
 end
