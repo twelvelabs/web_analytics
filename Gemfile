@@ -28,6 +28,8 @@ end
 group :test do
   gem 'capybara',               '>= 2.15', '< 4.0'
   gem 'chromedriver-helper'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
   gem 'minitest'
   gem 'minitest-reporters'
   gem 'minitest-spec-rails'
