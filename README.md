@@ -4,17 +4,26 @@ A simple web analytics prototype (Rails+React) I was asked to put together as a 
 
 ## Prerequisites
 
-tktk
+- [Docker](https://docs.docker.com/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (already installed w/ Docker for Mac)
 
 ## Install
 
-tktk
+```
+git clone git@github.com:twelvelabs/web_analytics.git
+cd ./web_analytics
+docker-compose build
+```
 
 ## Running
 
-tktk
+```
+docker-compose up
+```
 
 ## Tests
 
-tktk
+```
+docker-compose run --rm app rails test
+```
 

@@ -1,0 +1,13 @@
+.bundle
+.byebug_history
+.git
+.gitignore
+
+docker-compose.yml
+Dockerfile
+LICENSE
+README.md
+
+coverage/
+log/*
+tmp/*
