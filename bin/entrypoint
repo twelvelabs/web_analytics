@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+# Cleanup any stale pids
+rm -f /web_analytics/tmp/pids/server.pid
+
+rails s -p 3000 -b 0.0.0.0

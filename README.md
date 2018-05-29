@@ -10,9 +10,14 @@ A simple web analytics prototype (Rails+React) I was asked to put together as a 
 ## Install
 
 ```bash
+# Clone the app
 git clone git@github.com:twelvelabs/web_analytics.git
 cd ./web_analytics
 docker-compose build
+# Setup the dev and test databases
+# The AR version of `db:setup` does both, but `sequel-rails` does not :shrug:
+docker-compose run --rm app rake db:setup
+docker-compose run --rm -e "RAILS_ENV=test" app rake db:create
 ```
 
 ## Running

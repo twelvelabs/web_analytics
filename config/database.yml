@@ -1,0 +1,17 @@
+shared: &shared
+  adapter: postgres
+  encoding: utf8
+  pool: <%= ENV['RAILS_MAX_THREADS'] || 5 %>
+  timeout: 5000
+
+development:
+  <<: *shared
+  url: <%= ENV['DATABASE_URL'].gsub('?', '_development?') %>
+
+test:
+  <<: *shared
+  url: <%= ENV['DATABASE_URL'].gsub('?', '_test?') %>
+
+production:
+  <<: *shared
+  url: <%= ENV['DATABASE_URL'] %>
