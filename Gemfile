@@ -11,6 +11,7 @@ gem 'rails',                    '~> 5.2.0'
 gem 'sass-rails',               '~> 5.0'
 gem 'sequel',                   '~> 5.8.0'
 gem 'sequel-rails',             '~> 1.0.1'
+gem 'sequel_pg',                '~> 1.8.2'
 gem 'uglifier',                 '>= 1.3.0'
 
 group :development, :test do
