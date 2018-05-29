@@ -29,5 +29,8 @@ group :test do
   gem 'chromedriver-helper'
   gem 'minitest'
   gem 'minitest-reporters'
+  gem 'minitest-spec-rails'
+  gem 'mocha'
+  gem 'rubocop',                require: false
   gem 'selenium-webdriver'
 end
