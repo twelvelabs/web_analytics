@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get '/top_urls'       => 'pageviews#top_urls',      format: :json, as: :top_urls
+  get '/top_referrers'  => 'pageviews#top_referrers', format: :json, as: :top_referrers
 end
