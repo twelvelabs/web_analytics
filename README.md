@@ -37,6 +37,12 @@ docker-compose up
 open http://0.0.0.0:3000
 ```
 
+The API endpoints are cached with a short 5m TTL, but Rails doesn't enable caching in the development environment by default. To enable:
+
+```bash
+docker-compose run --rm app rails dev:cache
+```
+
 ## Tests
 
 ```bash
@@ -52,4 +58,34 @@ rails t path/to/some/test.rb
 # code changes
 rails t path/to/some/test.rb
 # etc...
+```
+
+## Load testing
+
+```bash
+# I was going to sort out a docker solution for this, but ran out of time/patience (yay, abstractions)
+brew install siege
+
+cd $RAILS_ROOT
+# -c50: 50 concurrent users
+# -d10: random pause between 0-10s between requests
+# -t3M: test for 3 minutes
+# -i -f: randomly select URLs from this file
+siege -c50 -d10 -t3M -i -f ./test/siege.txt
+
+# Results (on a 2011-era MBP w/ SSD)
+
+Lifting the server siege...
+Transactions:		        1770 hits
+Availability:		      100.00 %
+Elapsed time:		      179.68 secs
+Data transferred:	       32.74 MB
+Response time:		        0.07 secs
+Transaction rate:	        9.85 trans/sec
+Throughput:		        0.18 MB/sec
+Concurrency:		        0.72
+Successful transactions:        1770
+Failed transactions:	           0
+Longest transaction:	        1.71
+Shortest transaction:	        0.02
 ```
