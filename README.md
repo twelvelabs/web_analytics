@@ -10,9 +10,24 @@ A simple web analytics prototype (Rails+React) I was asked to put together as a 
 ## Install
 
 ```bash
+# Clone the app
 git clone git@github.com:twelvelabs/web_analytics.git
 cd ./web_analytics
 docker-compose build
+# Setup the dev and test databases
+# The AR version of `db:setup` does both, but `sequel-rails` does not :shrug:
+docker-compose run --rm app rake db:setup
+docker-compose run --rm -e "RAILS_ENV=test" app rake db:create
+```
+
+There are two rake tasks for setting up the dummy dataset:
+
+```bash
+# This will generate a 1M row CSV file in ./tmp and import it into the development database.
+# First run takes a minute or so to write the CSV, but successive runs will re-use it and be faster.
+rake dataset:import
+# If for any reason you want to regen the CSV (i.e. when making changes to the generator logic):
+rake dataset:regenerate
 ```
 
 ## Running
