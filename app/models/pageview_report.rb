@@ -22,6 +22,17 @@ class PageviewReport
     @pageview_data
   end
 
+  def cache_key
+    [
+      'pageview_report',
+      start_date.strftime('%F'),
+      end_date.strftime('%F'),
+      url_limit,
+      referrer_limit,
+      include_referrers
+    ].join('/')
+  end
+
   private
 
   def pageview_data_for_day(date)
@@ -37,14 +48,16 @@ class PageviewReport
                           .order(Sequel.desc(:count))
     # respect `url_limit`
     url_dataset = url_dataset.limit(url_limit) if url_limit
-
-    url_dataset.all.map do |url_data|
-      result = {
-        url:    url_data[:url],
-        visits: url_data[:count]
-      }
-      result[:referrers] = referrer_data_for_day(date, url_data[:url]) if include_referrers
-      result
+    # cache the results
+    Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      url_dataset.all.map do |url_data|
+        result = {
+          url:    url_data[:url],
+          visits: url_data[:count]
+        }
+        result[:referrers] = referrer_data_for_day(date, url_data[:url]) if include_referrers
+        result
+      end
     end
   end
 

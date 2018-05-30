@@ -37,6 +37,12 @@ docker-compose up
 open http://0.0.0.0:3000
 ```
 
+The API endpoints are cached with a short 5m TTL, but Rails doesn't enable caching in the development environment by default. To enable:
+
+```bash
+docker-compose run --rm app rails dev:cache
+```
+
 ## Tests
 
 ```bash
