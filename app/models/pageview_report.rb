@@ -22,11 +22,10 @@ class PageviewReport
     @pageview_data
   end
 
-  def cache_key
+  def cache_key_for_day(iso_date_string)
     [
       'pageview_report',
-      start_date.strftime('%F'),
-      end_date.strftime('%F'),
+      iso_date_string,
       url_limit,
       referrer_limit,
       include_referrers
@@ -37,43 +36,44 @@ class PageviewReport
 
   def pageview_data_for_day(date)
     iso_date_string = date.strftime('%F')
-    # SELECT date(created_at), url, COUNT(*) AS count
-    # FROM pageviews
-    # WHERE created_at = 'YYYY-MM-DD'
-    # GROUP BY date(created_at), url
-    # ORDER BY count DESC;
-    url_dataset = Pageview.dataset
-                          .where(created_at: iso_date_string)
-                          .group_and_count { [date(:created_at), :url] }
-                          .order(Sequel.desc(:count))
-    # respect `url_limit`
-    url_dataset = url_dataset.limit(url_limit) if url_limit
-    # cache the results
-    Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
-      url_dataset.all.map do |url_data|
-        result = {
-          url:    url_data[:url],
-          visits: url_data[:count]
-        }
-        result[:referrers] = referrer_data_for_day(date, url_data[:url]) if include_referrers
-        result
-      end
-    end
-  end
 
-  def referrer_data_for_day(date, url)
-    iso_date_string = date.strftime('%F')
-    ref_dataset = Pageview.dataset
-                          .where(created_at: iso_date_string)
-                          .where(url: url)
-                          .group_and_count { [date(:created_at), :url, :referrer] }
-                          .order(Sequel.desc(:count))
-    ref_dataset = ref_dataset.limit(referrer_limit) if referrer_limit
-    ref_dataset.all.map do |ref_data|
-      {
-        url:    ref_data[:referrer],
-        visits: ref_data[:count]
-      }
+    # SELECT date("created_at"), "url", "referrer", count(*) AS "count"
+    # FROM "pageviews"
+    # WHERE "created_at" = '2018-05-25'
+    # GROUP BY date("created_at"), "url", "referrer"
+    # ORDER BY "count" DESC;
+    rows = Pageview.dataset
+                   .where(created_at: iso_date_string)
+                   .group_and_count { [date(:created_at), :url, :referrer] }
+                   .order(Sequel.desc(:count))
+
+    Rails.cache.fetch(cache_key_for_day(iso_date_string), expires_in: 5.minutes) do
+      results = {}
+      rows.each do |row|
+        key = row[:url]
+        results[key] ||= {
+          url:        row[:url],
+          visits:     0
+        }
+        results[key][:visits] += row[:count]
+        next unless include_referrers
+        results[key][:referrers] ||= []
+        results[key][:referrers] << {
+          url:    row[:referrer],
+          visits: row[:count]
+        }
+      end
+      # sort by url `visits` DESC (referrer visits are already sorted in SQL)
+      results = results.values.sort_by { |r| r[:visits] }.reverse!
+      # respect `url_limit`
+      results = results[0, url_limit] if url_limit
+      # respect `referrer_limit`
+      if referrer_limit && include_referrers
+        results.each do |r|
+          r[:referrers] = r[:referrers][0, referrer_limit]
+        end
+      end
+      results
     end
   end
 
