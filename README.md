@@ -1,6 +1,6 @@
 ## Overview
 
-A simple web analytics prototype (Rails+React) I was asked to put together as a [programming exercise](./docs/requirements.md).
+A simple web analytics prototype (Rails+React) I was asked to put together as a [programming exercise](./docs/requirements.md). I recorded my thoughts and design decisions in a short [retrospective](./docs/retrospective.md).
 
 ## Prerequisites
 
