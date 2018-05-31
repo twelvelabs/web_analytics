@@ -17,7 +17,7 @@ By this point I had everything ready to start writing tests and developing, so l
 
 ### [Setup the dataset](https://github.com/twelvelabs/web_analytics/issues/2)
 
-_[see #7 for all the commits]_
+> https://github.com/twelvelabs/web_analytics/pull/9
 
 Seemed like the constraint of using `sequel` was intentional in order to take people out of their comfort zone, and that was totally my experience. Felt like I could have done this portion in half the time (if not more) had I been using AR. Thankfully the sequel docs were pretty good, and was able to plow through it.
 
@@ -54,7 +54,7 @@ As one would expect, caching improved the response time of the API endpoints dra
 
 The N+1 queries were really bugging me. After sleeping on it, I realized I could just do some of the aggregation, sorting, and limiting in Ruby (something I've done at past gigs to reduce load on the DB):
 
-https://github.com/twelvelabs/web_analytics/pull/9
+> https://github.com/twelvelabs/web_analytics/pull/9
 
 
 ### [Setup front end](https://github.com/twelvelabs/web_analytics/issues/5)
