@@ -2,6 +2,10 @@ require 'test_helper'
 
 class PageviewReportTest < ActiveSupport::TestCase
 
+  before do
+    Pageview.dataset.delete
+  end
+
   describe 'PageviewReport' do
     it 'should raise if start_date is invalid' do
       assert_raise(ArgumentError) { PageviewReport.new(start_date: nil, end_date: Date.today) }

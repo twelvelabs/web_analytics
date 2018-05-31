@@ -50,6 +50,13 @@ I wasn't too happy w/ how the controller looked, so I extracted the logic into a
 As one would expect, caching improved the response time of the API endpoints dramatically. I did a simple load test using `siege` (instructions in the README) and was pretty happy with the result.
 
 
+#### Addendum
+
+The N+1 queries were really bugging me. After sleeping on it, I realized I could just do some of the aggregation, sorting, and limiting in Ruby (something I've done at past gigs to reduce load on the DB):
+
+https://github.com/twelvelabs/web_analytics/pull/9
+
+
 ### [Setup front end](https://github.com/twelvelabs/web_analytics/issues/5)
 
 tktk
