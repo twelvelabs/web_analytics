@@ -76,16 +76,16 @@ siege -c50 -d10 -t3M -i -f ./test/siege.txt
 # Results (on a 2011-era MBP w/ SSD)
 
 Lifting the server siege...
-Transactions:		        1770 hits
+Transactions:		        1785 hits
 Availability:		      100.00 %
-Elapsed time:		      179.68 secs
-Data transferred:	       32.74 MB
-Response time:		        0.07 secs
-Transaction rate:	        9.85 trans/sec
-Throughput:		        0.18 MB/sec
-Concurrency:		        0.72
-Successful transactions:        1770
+Elapsed time:		      179.55 secs
+Data transferred:	       27.31 MB
+Response time:		        0.04 secs
+Transaction rate:	        9.94 trans/sec
+Throughput:		        0.15 MB/sec
+Concurrency:		        0.41
+Successful transactions:        1785
 Failed transactions:	           0
-Longest transaction:	        1.71
-Shortest transaction:	        0.02
+Longest transaction:	        0.92
+Shortest transaction:	        0.01
 ```
